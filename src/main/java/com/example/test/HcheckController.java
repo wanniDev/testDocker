@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HcheckController {
-	@GetMapping("/hcheck")
+	@GetMapping("/check")
 	public Long hcheck() {
 		return System.currentTimeMillis();
 	}
