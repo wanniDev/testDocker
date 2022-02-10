@@ -1,28 +1,20 @@
 pipeline {
     agent any
 
-    tools {
-        maven "Maven 3.6.3"
-    }
-
-    options {
-            skipDefaultCheckout()
-    }
-
     stages {
-        stage('build') {
+        stage('Build') {
             steps {
-                echo 'build'
+                echo 'Building..'
             }
         }
-        stage('test') {
+        stage('Test') {
             steps {
-                echo 'test'
+                echo 'Testing..'
             }
         }
-        stage('deploy') {
+        stage('Deploy') {
             steps {
-                echo 'deploy'
+                echo 'Deploying....'
             }
         }
     }
