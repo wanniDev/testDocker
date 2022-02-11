@@ -28,15 +28,13 @@ jobs:
       uses: 'google-github-actions/auth@v0'
       with:
         credentials_json: '${{ secrets.GCP_SA_KEY }}'
-      
-#     - id: 'auth'
-#       uses: 'google-github-actions/auth@v0'
-#       with:
-#         workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-#         service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
         
     - name: GCP Github Action
       uses: google-github-actions/setup-gcloud@master
+    # Configure Docker to use the gcloud command-line tool as a credential
+    # helper for authentication
+    - run: |-
+        gcloud --quiet auth configure-docker
     - name: Connect GCE And execute docker ps
       run: |-
         gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'docker ps'
