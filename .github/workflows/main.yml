@@ -13,17 +13,23 @@ env:
   
 jobs:
   setup-pull-deploy:
+    name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
+    
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
 
-      - name: GCP Github Action
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-        with:
-            service_account_key: ${{ secrets.GCP_SA_KEY }}
-            project_id: ${{ secrets.GCP_PROJECT_ID }}
+    - name: GCP Github Action
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
       
-      - name: Connect GCE And execute docker ps
-        run: |-
-          gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'docker ps'
+    - name: Connect GCE And execute docker ps
+      run: |-
+        gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'docker ps'
