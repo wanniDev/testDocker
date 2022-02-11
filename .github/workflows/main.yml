@@ -35,12 +35,8 @@ jobs:
 #         workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
 #         service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
         
-#     - name: GCP Github Action
-#       uses: google-github-actions/setup-gcloud@master
-#       with:
-#           service_account_key: ${{ secrets.GCP_SA_KEY }}
-#           project_id: ${{ secrets.GCP_PROJECT_ID }}
-      
+    - name: GCP Github Action
+      uses: google-github-actions/setup-gcloud@master
     - name: Connect GCE And execute docker ps
       run: |-
         gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'docker ps'
