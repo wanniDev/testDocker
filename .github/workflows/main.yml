@@ -43,4 +43,6 @@ jobs:
       
     - name: Connect GCE And execute docker ps
       run: |-
-        gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'docker ps'
+        gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" --
+    - name: test docker
+      run: docker ps
