@@ -8,8 +8,8 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  GCE_INSTANCE: test-run-jar	  
-  GCE_INSTANCE_ZONE: asia-east2-a	
+  GCE_INSTANCE: test-instance	  
+  GCE_INSTANCE_ZONE: asia-east1-a	
   
 jobs:
   setup-pull-deploy:
