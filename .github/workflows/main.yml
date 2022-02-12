@@ -65,7 +65,8 @@ jobs:
         gcloud compute instances update-container "$GCE_INSTANCE" \
           --zone "$GCE_INSTANCE_ZONE" \
           --container-image "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA"
-    - name: remove unused containers
-      run: docker ps -q |xargs docker rm
-    - name: remove unused images
-      run: docker images -q |xargs docker rmi
+    - name: Connect GCE And execute docker ps
+      run: |-
+        gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'docker ps -q |xargs docker rm'
+    - run: |-
+        gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'docker images -q |xargs docker rmi'
