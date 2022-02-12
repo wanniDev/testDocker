@@ -34,11 +34,7 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml -DskipTests
-#     - run: mkdir target && cp target/*test-0.0.1-SNAPSHOT.jar target
-#     - uses: actions/upload-artifact@v1
-#       with:
-#         name: Package
-#         path: target
+
     # Configure Workload Identity Federation and generate an access token.
     - id: 'auth'
       uses: 'google-github-actions/auth@v0'
@@ -69,3 +65,7 @@ jobs:
         gcloud compute instances update-container "$GCE_INSTANCE" \
           --zone "$GCE_INSTANCE_ZONE" \
           --container-image "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA"
+    - name: remove unused containers
+      run: docker ps -q |xargs docker rm
+    - name: remove unused images
+      run: docker images -q |xargs docker rmi
