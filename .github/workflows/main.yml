@@ -16,6 +16,7 @@ jobs:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
     
+    # Add "id-token" with the intended permissions.
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -23,18 +24,34 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-      
+    
+    # Configure Workload Identity Federation and generate an access token.
     - id: 'auth'
       uses: 'google-github-actions/auth@v0'
       with:
         credentials_json: '${{ secrets.GCP_SA_KEY }}'
         
+    # Setup gcloud CLI
     - name: GCP Github Action
       uses: google-github-actions/setup-gcloud@master
+      
     # Configure Docker to use the gcloud command-line tool as a credential
     # helper for authentication
     - run: |-
         gcloud --quiet auth configure-docker
-    - name: Connect GCE And execute docker ps
+    
+    # Build the Docker image
+    - name: Build
       run: |-
-        gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'docker ps'
+        docker build --tag "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA" .
+        
+    # Push the Docker image to Google Container Registry
+    - name: Publish
+      run: |-
+        docker push "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA"
+        
+    - name: Deploy
+      run: |-
+        gcloud compute instances update-container "$GCE_INSTANCE" \
+          --zone "$GCE_INSTANCE_ZONE" \
+          --container-image "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA"
