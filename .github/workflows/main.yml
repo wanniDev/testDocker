@@ -34,11 +34,11 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml -DskipTests
-    - run: mkdir target && cp target/*test-0.0.1-SNAPSHOT.jar target
-    - uses: actions/upload-artifact@v1
-      with:
-        name: Package
-        path: target
+#     - run: mkdir target && cp target/*test-0.0.1-SNAPSHOT.jar target
+#     - uses: actions/upload-artifact@v1
+#       with:
+#         name: Package
+#         path: target
     # Configure Workload Identity Federation and generate an access token.
     - id: 'auth'
       uses: 'google-github-actions/auth@v0'
