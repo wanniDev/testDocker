@@ -25,6 +25,20 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     
+    # package with JAVA
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml -DskipTests
+    - run: mkdir target && cp target/*test-0.0.1-SNAPSHOT.jar target
+    - uses: actions/upload-artifact@v1
+      with:
+        name: Package
+        path: target
     # Configure Workload Identity Federation and generate an access token.
     - id: 'auth'
       uses: 'google-github-actions/auth@v0'
