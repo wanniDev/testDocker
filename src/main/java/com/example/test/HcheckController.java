@@ -9,4 +9,9 @@ public class HcheckController {
 	public Long hcheck() {
 		return System.currentTimeMillis();
 	}
+
+	@GetMapping("/hello")
+	public String hello() {
+		return "hello";
+	}
 }
