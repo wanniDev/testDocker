@@ -49,13 +49,6 @@ jobs:
     # helper for authentication
     - run: |-
         gcloud --quiet auth configure-docker
-    
-#     - name: Connect GCE And execute remove docker container and image
-#       run: |-
-#         gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'docker stop $(docker ps -q -a) | docker rm $(docker ps -q -a) \
-#         docker rmi $(docker images | grep "iron-wave-340906" | awk '{print $3}' )'
-    
-    
         
     # $GITHUB_SHA
     # Build the Docker image
@@ -73,3 +66,7 @@ jobs:
         gcloud compute instances update-container "$GCE_INSTANCE" \
           --zone "$GCE_INSTANCE_ZONE" \
           --container-image "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:1.0"
+          
+    - name: Connect GCE And execute remove docker container and image
+      run: |-
+        gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'docker rmi $(docker images -f "dangling=true" -q)'
