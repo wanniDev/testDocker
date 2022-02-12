@@ -69,4 +69,4 @@ jobs:
           
     - name: Connect GCE And execute remove docker container and image
       run: |-
-        gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'sh deploy.sh'
+        gcloud compute "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'sh ~/deploy.sh'
