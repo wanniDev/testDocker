@@ -49,9 +49,9 @@ jobs:
     # helper for authentication
     - run: |-
         gcloud --quiet auth configure-docker
-    - name: Connect GCE And execute remove docker container and image
-      run: |-
-        gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'sudo sh /home/curry_doubleship220910/deploy.sh'        
+#     - name: Connect GCE And execute remove docker container and image
+#       run: |-
+#         gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'sudo sh /home/curry_doubleship220910/deploy.sh'        
     # $GITHUB_SHA
     # Build the Docker image
     - name: Build
@@ -68,3 +68,6 @@ jobs:
         gcloud compute instances update-container "$GCE_INSTANCE" \
           --zone "$GCE_INSTANCE_ZONE" \
           --container-image "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:1.0"
+    - name: Connect GCE And execute remove docker container and image
+      run: |-
+        gcloud compute ssh "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE" -- 'sudo docker image prune -f'
