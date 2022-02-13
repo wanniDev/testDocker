@@ -29,4 +29,9 @@ public class HcheckController {
 	public String hello4() {
 		return "hello4";
 	}
+
+	@GetMapping("/test")
+	public String test() {
+		return "test";
+	}
 }
